@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-	    APP_NAME = "nginx-game"
+	    APP_NAME = "nginx-game-pipeline"
         RELEASE = "1.0.0"
         DOCKER_USER = "testsysadmin8"
         DOCKER_PASS = 'dockerhub'

@@ -8,7 +8,7 @@ pipeline {
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
 	    JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
-        JENKINS_SERVER = 192.168.52.130
+        JENKINS_SERVER = "192.168.52.130"
     }
     stages{
         stage("Cleanup Workspace"){

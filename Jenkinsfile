@@ -27,7 +27,7 @@ pipeline {
                         docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                         docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest
                     """
-                    sh "docker login -u ${DOCKER_USER} --p ${DOCKER_PASS}"
+                    sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
                     sh """
                         docker push ${IMAGE_NAME}:${IMAGE_TAG}
                         docker push ${IMAGE_NAME}:latest

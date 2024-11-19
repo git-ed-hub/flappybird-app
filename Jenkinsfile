@@ -4,7 +4,7 @@ pipeline {
 	    APP_NAME = "nginx-game-pipeline"
         RELEASE = "1.0.0"
         DOCKER_USER = "testsysadmin8"
-        DOCKER_PASS = credentials('dockerhub')
+        DOCKER_PASS = credentials("dockerhub")
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
 	    JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
@@ -27,9 +27,7 @@ pipeline {
                         docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                         docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest
                     """
-                    sh """
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                    """
+                    sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
                     sh """
                         docker push ${IMAGE_NAME}:${IMAGE_TAG}
                         docker push ${IMAGE_NAME}:latest

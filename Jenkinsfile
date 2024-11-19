@@ -4,10 +4,10 @@ pipeline {
 	    APP_NAME = "nginx-game-pipeline"
         RELEASE = "1.0.0"
         DOCKER_USER = "testsysadmin8"
-        DOCKER_PASS = credentials("dockerhub")
+        DOCKER_PASS = credentials('dockerhub')
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-	    JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
+	    JENKINS_API_TOKEN = credentials('JENKINS_API_TOKEN')
     }
     stages{
         stage("Cleanup Workspace"){
@@ -27,7 +27,7 @@ pipeline {
                         docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                         docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest
                     """
-                    docker.withRegistry('https://index.docker.io/v1/', ${DOCKER_PASS}) {
+                    docker.withRegistry('https://index.docker.io/v1/', '${DOCKER_PASS}') {
                         docker.image(${IMAGE_NAME}).push(${IMAGE_TAG})
                         docker.image(${IMAGE_NAME}).push(${'latest'})
                     }

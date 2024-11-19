@@ -23,13 +23,15 @@ pipeline {
         stage("Build & Push Docker Image") {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/',credentials: 'dockerhub') {
-                        docker_image = docker.build "${IMAGE_NAME}"
-                    }
-                    docker.withRegistry('https://index.docker.io/v1/',credentials: 'dockerhub') {
-                        docker.image.push("${IMAGE_TAG}")
-                        docker.image.push('latest')
-                    }
+                    sh """
+                        docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+                        docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest
+                    """
+                    sh "docker login -u ${DOCKER_USER} --p ${DOCKER_PASS}"
+                    sh """
+                        docker push ${IMAGE_NAME}:${IMAGE_TAG}
+                        docker push ${IMAGE_NAME}:latest
+                    """
                 }
             }
        }

@@ -27,7 +27,7 @@ pipeline {
                         docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                         docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest
                     """
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                    docker.withRegistry('https://index.docker.io/v1/', ${DOCKER_PASS}) {
                         docker.image(${IMAGE_NAME}).push(${IMAGE_TAG})
                         docker.image(${IMAGE_NAME}).push(${'latest'})
                     }

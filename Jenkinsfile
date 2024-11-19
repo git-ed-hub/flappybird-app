@@ -8,6 +8,7 @@ pipeline {
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
 	    JENKINS_API_TOKEN = credentials('JENKINS_API_TOKEN')
+        REPO = 'https://github.com/git-ed-hub/flappybird-app.git'
     }
     stages{
         stage("Cleanup Workspace"){
@@ -17,7 +18,7 @@ pipeline {
         }
         stage("Checkout from SCM"){
             steps {
-                git branch: 'main', credentialsId: 'github', url: 'https://github.com/git-ed-hub/flappybird-app.git'
+                git branch: 'main', credentialsId: 'github', url: REPO
             }
         }
         stage("Build & Push Docker Image") {
@@ -38,7 +39,7 @@ pipeline {
        stage("Trivy Scan") {
            steps {
                script {
-	            sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image testsysadmin8/nginx-game-pipeline:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
+	            sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image ${IMAGE_NAME}:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
                }
            }
        }
